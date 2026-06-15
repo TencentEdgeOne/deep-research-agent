@@ -3,7 +3,7 @@
  *
  * Cloud-functions can't reuse agents/_shared.ts (which imports the OpenAI
  * Agents SDK). These wrappers handle JSON I/O the way the EdgeOne Makers
- * Node Functions runtime expects — see https://pages.edgeone.ai/document/node-functions
+ * Node Functions runtime expects.
  */
 
 const JSON_HEADERS = { 'Content-Type': 'application/json; charset=UTF-8' } as const;
@@ -16,13 +16,11 @@ export function errorResponse(message: string, status = 400): Response {
   return jsonResponse({ error: message }, status);
 }
 
-export async function readJsonBody(context: any): Promise<Record<string, unknown>> {
-  try {
-    const data = await context.request.json();
-    return data && typeof data === 'object' && !Array.isArray(data)
-      ? (data as Record<string, unknown>)
-      : {};
-  } catch {
-    return {};
-  }
+export function readJsonBody(context: any): Record<string, unknown> {
+  // SOP node-entry §2: the request body is already parsed by the runtime —
+  // read context.request.body directly (do NOT call context.request.json()).
+  const data = context?.request?.body;
+  return data && typeof data === 'object' && !Array.isArray(data)
+    ? (data as Record<string, unknown>)
+    : {};
 }

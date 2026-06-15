@@ -62,7 +62,7 @@ export function getModel(env: Record<string, string | undefined>): OpenAIChatCom
   const client = createOpenAIClient(env);
   return new OpenAIChatCompletionsModel(
     client,
-    "@makers/deepseek-v4-flash",
+    env.AI_GATEWAY_MODEL || "@makers/deepseek-v4-flash",
   );
 }
 
