@@ -23,6 +23,7 @@
  * Note: `agents/research.ts` writes versions to the same store using
  * `context.store` directly (see _project-store.ts logic mirrored there).
  */
+import type { CloudFunctionContext } from '@edgeone/types';
 import { createLogger } from '../_logger';
 import { jsonResponse, errorResponse, readJsonBody } from '../_http';
 
@@ -77,7 +78,7 @@ interface ProjectIndex {
 
 // ─── Handler ──────────────────────────────────────────────────────────────────
 
-export async function onRequestPost(context: any): Promise<Response> {
+export async function onRequestPost(context: CloudFunctionContext): Promise<Response> {
   const body = await readJsonBody(context);
   const action = typeof body.action === 'string' ? body.action : '';
   // Cloud-functions read the agent-attached store via context.agent.store

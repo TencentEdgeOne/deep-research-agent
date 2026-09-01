@@ -7,6 +7,7 @@
  * and citations during the edit (which doesn't actually re-search) — see
  * the "Plan B" notes in the project history.
  */
+import type { AgentContext } from '@edgeone/types';
 import {
   Agent,
   run,
@@ -25,7 +26,7 @@ export async function* streamFollowUpEdit(
   modificationRequest: string,
   previousReport: string,
   opts: ResearchOptions,
-  context: any,
+  context: AgentContext,
   signal?: AbortSignal,
 ): AsyncGenerator<string> {
   const { depth, projectId, locale, previousPapers = [], previousArticles = [], previousScrapedUrls = [], previousSubQuestions = [] } = opts;

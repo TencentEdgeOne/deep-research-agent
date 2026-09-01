@@ -6,7 +6,8 @@
  * Purely diagnostic: no AI runtime usage, so it lives in cloud-functions
  * rather than agents/ (matches the openai-agents-test layout).
  */
-export async function onRequest(context: any): Promise<Response> {
+import type { CloudFunctionContext } from '@edgeone/types';
+export async function onRequest(context: CloudFunctionContext): Promise<Response> {
   const data = {
     status: 'ok',
     runId: context.run_id ?? context.agent?.run_id ?? null,

@@ -11,6 +11,7 @@
  * (`setTracingDisabled(true)`), not by mutating process.env (SOP C-51).
  */
 
+import type { AgentContext } from '@edgeone/types';
 import {
   Agent,
   run,
@@ -180,7 +181,7 @@ async function ensureSandboxInitialized<T>(fn: () => Promise<T>): Promise<T> {
  * hand-rolled `/v1/sandbox/*` HTTP fallback, no process.env reads.
  */
 async function sandboxExec(
-  context: any,
+  context: AgentContext,
   command: string,
   timeout = 30_000
 ): Promise<{ stdout: string; stderr: string } | null> {
@@ -213,7 +214,7 @@ async function sandboxExec(
  * Returns the response body text on first success, or null on failure.
  */
 export async function safeFetch(
-  context: any,
+  context: AgentContext,
   url: string,
   options?: { timeout?: number; headers?: Record<string, string> }
 ): Promise<string | null> {

@@ -16,6 +16,7 @@
  * a DOI, we call this to fill in title/authors/year/journal/abstract from
  * the upstream metadata so the model isn't free to hallucinate them later.
  */
+import type { CloudFunctionContext } from '@edgeone/types';
 import { createLogger } from '../_logger';
 import { jsonResponse, errorResponse, readJsonBody } from '../_http';
 
@@ -134,7 +135,7 @@ async function lookupSemanticScholar(doi: string): Promise<Partial<EnrichedSourc
 
 // ─── Handler ─────────────────────────────────────────────────────────────────
 
-export async function onRequestPost(context: any): Promise<Response> {
+export async function onRequestPost(context: CloudFunctionContext): Promise<Response> {
   const body = await readJsonBody(context);
   const rawInput = (body.doi || body.url || body.input || '') as string;
   if (!rawInput || typeof rawInput !== 'string') {

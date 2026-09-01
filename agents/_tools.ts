@@ -6,6 +6,7 @@
  * the runtime ran multiple invocations in the same process. Construct a
  * fresh tool instance per request via `buildResearchTools(context)`.
  */
+import type { AgentContext } from '@edgeone/types';
 import { z } from 'zod';
 import { tool, createLogger, safeFetch } from './_shared';
 import {
@@ -66,7 +67,7 @@ export const buildDecomposeQuestion = () => tool({
 
 // ─── search_literature ───────────────────────────────────────────────────────
 
-export const buildSearchLiterature = (context: any, registry: CitationRegistry) => tool({
+export const buildSearchLiterature = (context: AgentContext, registry: CitationRegistry) => tool({
   name: 'search_literature',
   description: 'Search academic databases (CrossRef + Semantic Scholar) for relevant papers. Call this ONCE with a combined query from the sub-questions. Returns JSON with papers array — each paper carries a "citationNumber" you MUST use for its inline [n] citations.',
   parameters: z.object({
@@ -126,7 +127,7 @@ export const buildSearchLiterature = (context: any, registry: CitationRegistry) 
 
 // ─── search_web ──────────────────────────────────────────────────────────────
 
-export const buildSearchWeb = (context: any, registry: CitationRegistry) => tool({
+export const buildSearchWeb = (context: AgentContext, registry: CitationRegistry) => tool({
   name: 'search_web',
   description: 'Search the web for relevant articles. Call this ONCE with a focused query directly related to the research topic. The query should be specific and in the same language as the research question. Returns JSON with articles array — each article carries a "citationNumber" you MUST use for its inline [n] citations.',
   parameters: z.object({
@@ -235,7 +236,7 @@ export const buildSearchWeb = (context: any, registry: CitationRegistry) => tool
 
 // ─── scrape_urls ─────────────────────────────────────────────────────────────
 
-export const buildScrapeUrls = (context: any) => tool({
+export const buildScrapeUrls = (context: AgentContext) => tool({
   name: 'scrape_urls',
   description: 'Scrape content from user-provided URLs. Use this when the user provides specific URLs to include in the research. Returns extracted text content from each URL.',
   parameters: z.object({
@@ -261,7 +262,7 @@ export const buildScrapeUrls = (context: any) => tool({
  * The registry is returned alongside the tools so the caller can read the
  * canonical numbered source list after the run.
  */
-export function buildResearchTools(context: any) {
+export function buildResearchTools(context: AgentContext) {
   const registry = createCitationRegistry();
   return {
     registry,

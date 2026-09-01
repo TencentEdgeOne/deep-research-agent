@@ -11,6 +11,7 @@
  * it includes [SUGGEST_REGENERATE] in its response, which the frontend
  * converts into a "Regenerate Report" button.
  */
+import type { AgentContext } from '@edgeone/types';
 import {
   Agent,
   run,
@@ -175,7 +176,7 @@ async function* streamChat(
 
 // ─── HTTP Handler ────────────────────────────────────────────────────────────
 
-export async function onRequest(context: any) {
+export async function onRequest(context: AgentContext) {
   const { request } = context;
   const body = request?.body ?? {};
   const { message, chatHistory = [], report = '' } = body;

@@ -8,6 +8,7 @@
  * header fallback only as a defensive last resort.
  */
 
+import type { AgentContext } from '@edgeone/types';
 const logger = {
   log(...args: unknown[]) {
     console.log(`[stop][${new Date().toISOString()}]`, ...args);
@@ -17,7 +18,7 @@ const logger = {
   },
 };
 
-export async function onRequest(context: any) {
+export async function onRequest(context: AgentContext) {
   // /stop endpoint: the frontend MUST pass conversation_id via the body
   // (never carry the header). Body wins; runtime-injected
   // context.conversation_id acts as a fallback.

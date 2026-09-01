@@ -6,6 +6,7 @@
  * Node Functions runtime expects.
  */
 
+import type { CloudFunctionContext } from '@edgeone/types';
 const JSON_HEADERS = { 'Content-Type': 'application/json; charset=UTF-8' } as const;
 
 export function jsonResponse(data: unknown, status = 200): Response {
@@ -16,7 +17,7 @@ export function errorResponse(message: string, status = 400): Response {
   return jsonResponse({ error: message }, status);
 }
 
-export function readJsonBody(context: any): Record<string, unknown> {
+export function readJsonBody(context: CloudFunctionContext): Record<string, unknown> {
   // SOP node-entry §2: the request body is already parsed by the runtime —
   // read context.request.body directly (do NOT call context.request.json()).
   const data = context?.request?.body;

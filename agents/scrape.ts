@@ -8,6 +8,7 @@
  * Uses platform browser tool (op: 'fetch') to render pages and extract text.
  * Fallback: runtime fetch for non-JS pages.
  */
+import type { AgentContext } from '@edgeone/types';
 import { createLogger, safeFetch } from './_shared';
 
 const logger = createLogger('scrape');
@@ -55,7 +56,7 @@ function extractTitle(html: string): string {
 
 // ─── Core Scraping Function (exported for use by research.ts) ────────────────
 
-export async function scrapeUrls(context: any, urls: string[]): Promise<ScrapedUrl[]> {
+export async function scrapeUrls(context: AgentContext, urls: string[]): Promise<ScrapedUrl[]> {
   const results: ScrapedUrl[] = [];
 
   for (const url of urls.slice(0, 5)) { // Limit to 5 URLs per request
@@ -130,7 +131,7 @@ export async function scrapeUrls(context: any, urls: string[]): Promise<ScrapedU
 
 // ─── HTTP Handler ────────────────────────────────────────────────────────────
 
-export async function onRequest(context: any) {
+export async function onRequest(context: AgentContext) {
   const { request } = context;
   const { urls } = request?.body ?? {};
 

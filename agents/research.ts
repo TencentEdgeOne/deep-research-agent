@@ -20,6 +20,7 @@
  *   - _report-cleanup.ts  → post-processing for synthesizer output
  *   - research.ts (this)  → streamResearch + onRequest HTTP handler
  */
+import type { AgentContext } from '@edgeone/types';
 import {
   Agent,
   run,
@@ -46,7 +47,7 @@ const logger = createLogger('research');
 async function* streamResearch(
   question: string,
   opts: ResearchOptions,
-  context: any,
+  context: AgentContext,
   signal?: AbortSignal,
 ): AsyncGenerator<string> {
   ensureProvider(context.env);
@@ -476,7 +477,7 @@ Call the decompose_question tool with your generated sub-questions.`,
 
 // ─── HTTP Handler ────────────────────────────────────────────────────────────
 
-export async function onRequest(context: any) {
+export async function onRequest(context: AgentContext) {
   const { request } = context;
   const body = request?.body ?? {};
   const { message, question: questionField, depth = 'standard', projectId, urls, confirmedSubQuestions, decomposeOnly, locale, citationStyle } = body;
